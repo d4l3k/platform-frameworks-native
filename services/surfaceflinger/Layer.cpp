@@ -654,6 +654,7 @@ void Layer::onDraw(const sp<const DisplayDevice>& hw, const Region& clip,
             if (transform & NATIVE_WINDOW_TRANSFORM_FLIP_V)
                 tr = tr * flipV;
 
+
             // calculate the inverse
             tr = inverse(tr);
 
@@ -661,6 +662,13 @@ void Layer::onDraw(const sp<const DisplayDevice>& hw, const Region& clip,
             const mat4 texTransform(mat4(static_cast<const float*>(textureMatrix)) * tr);
             memcpy(textureMatrix, texTransform.asArray(), sizeof(textureMatrix));
         }
+            const mat4 scale(
+                0.5,0,0,0,
+                0,0.5,0,0,
+                0,0,0.5,0,
+                0,0,0,1);
+        const mat4 texTransform(mat4(static_cast<const float*>(textureMatrix)) * scale);
+        memcpy(textureMatrix, texTransform.asArray(), sizeof(textureMatrix));
 
         // Set things up for texturing.
         mTexture.setDimensions(mActiveBuffer->getWidth(), mActiveBuffer->getHeight());
