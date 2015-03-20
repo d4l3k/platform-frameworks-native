@@ -78,6 +78,8 @@ void GLES11RenderEngine::setViewportAndProjection(
         size_t vpw, size_t vph, Rect sourceCrop, size_t hwh, bool yswap,
         Transform::orientation_flags rotation) {
     glViewport(0, 0, vpw, vph);
+    // CUBEWM MODIFICATION
+    glFrustumf(0, vpw, 0, vph, 0, 10)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 

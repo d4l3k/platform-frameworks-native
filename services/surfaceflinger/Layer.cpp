@@ -64,7 +64,6 @@ Layer::Layer(SurfaceFlinger* flinger, const sp<Client>& client,
         mTextureName(-1U),
         mPremultipliedAlpha(true),
         mName("unnamed"),
-        mDebug(false),
         mFormat(PIXEL_FORMAT_NONE),
         mTransactionFlags(0),
         mQueuedFrames(0),
@@ -662,11 +661,12 @@ void Layer::onDraw(const sp<const DisplayDevice>& hw, const Region& clip,
             const mat4 texTransform(mat4(static_cast<const float*>(textureMatrix)) * tr);
             memcpy(textureMatrix, texTransform.asArray(), sizeof(textureMatrix));
         }
-            const mat4 scale(
-                0.5,0,0,0,
-                0,0.5,0,0,
-                0,0,0.5,0,
-                0,0,0,1);
+        // CUBEWM MODIFICATION
+        mat4 scale(
+            2,0,0,0,
+            0,2,0,0,
+            0,0,2,1,
+            0,0,0,1);
         const mat4 texTransform(mat4(static_cast<const float*>(textureMatrix)) * scale);
         memcpy(textureMatrix, texTransform.asArray(), sizeof(textureMatrix));
 
@@ -701,7 +701,6 @@ void Layer::clearWithOpenGL(
 
 void Layer::drawWithOpenGL(const sp<const DisplayDevice>& hw,
         const Region& /* clip */, bool useIdentityTransform) const {
-    const uint32_t fbHeight = hw->getHeight();
     const State& s(getDrawingState());
 
     computeGeometry(hw, mMesh, useIdentityTransform);

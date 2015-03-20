@@ -118,6 +118,8 @@ void GLES20RenderEngine::setViewportAndProjection(
     }
 
     glViewport(0, 0, vpw, vph);
+    // CUBEWM MODIFICATION
+    glFrustumf(0, vpw, 0, vph, 0, 10)
     mState.setProjectionMatrix(m);
     mVpWidth = vpw;
     mVpHeight = vph;
